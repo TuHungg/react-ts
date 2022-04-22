@@ -2,14 +2,18 @@ import {
   AppBar,
   Box,
   Button,
+  Chip,
   FormControl,
   MenuItem,
+  PropTypes,
   Select,
   SelectChangeEvent,
   Toolbar,
   Typography,
 } from '@mui/material'
-import React, { ChangeEvent, useEffect, useState } from 'react'
+import React, { ChangeEvent, useContext, useEffect, useState } from 'react'
+import { ProgressContext } from '../contexts/ProgressContext'
+import { ThemeContext } from '../contexts/ThemeContext'
 import WelcomeMessage from './WelcomeMessage'
 // import { Theme, createStyles } from '@mui/material'
 
@@ -25,6 +29,10 @@ import WelcomeMessage from './WelcomeMessage'
 const Navbar = () => {
   // styles
   //   const classes = useStyles()
+
+  // context
+  const { lastTime, status } = useContext(ProgressContext)
+  const { theme } = useContext(ThemeContext)
 
   //state
   const [position, setPosition] = useState<string>('mobile development')
@@ -42,12 +50,15 @@ const Navbar = () => {
   const onPositionChange = (event: SelectChangeEvent<string>) => setPosition(event.target.value)
 
   return (
-    <AppBar position='static' color='primary'>
+    <AppBar position='static' color={theme}>
       <Toolbar>
         <Box display='flex' justifyContent='space-between' alignItems='center' width={1} py={2}>
           <Typography variant='h6'>My movies</Typography>
           <Box textAlign='center'>
             <WelcomeMessage position={position} />
+            <Chip
+              label={`Last time working on this project: ${lastTime} - Status: in Progress ${status}`}
+            />
             <Box mt={1}>
               <FormControl>
                 <Select
